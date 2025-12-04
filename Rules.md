@@ -6,18 +6,18 @@
 
 ## 📑 Quick Navigation
 
-| Section | Purpose |
-|---------|---------|
-| 🛠️ [Tech Stack](#-tech-stack) | What we use |
-| 📁 [File Structure](#-file--folder-structure) | Where things go |
-| ⚛️ [Components](#-component-rules) | How to build UI |
-| 🔄 [State & Redux](#-state-management-redux-toolkit) | How data flows |
-| 🎨 [Styling](#-styling--tailwind) | How we theme |
-| 📝 [Naming & Types](#-naming--types) | Conventions |
-| ⏳ [Async & Effects](#-async--side-effects) | Network & timers |
-| ✅ [Testing](#-testing) | QA standards |
-| 🔨 [Git & CI](#-git--commits) | Workflow |
-| ♿ [Quality](#-accessibility--performance) | A11y & perf |
+| Section                                              | Purpose          |
+| ---------------------------------------------------- | ---------------- |
+| 🛠️ [Tech Stack](#-tech-stack)                        | What we use      |
+| 📁 [File Structure](#-file--folder-structure)        | Where things go  |
+| ⚛️ [Components](#-component-rules)                   | How to build UI  |
+| 🔄 [State & Redux](#-state-management-redux-toolkit) | How data flows   |
+| 🎨 [Styling](#-styling--tailwind)                    | How we theme     |
+| 📝 [Naming & Types](#-naming--types)                 | Conventions      |
+| ⏳ [Async & Effects](#-async--side-effects)          | Network & timers |
+| ✅ [Testing](#-testing)                              | QA standards     |
+| 🔨 [Git & CI](#-git--commits)                        | Workflow         |
+| ♿ [Quality](#-accessibility--performance)           | A11y & perf      |
 
 ---
 
@@ -87,6 +87,7 @@ frontend/
 ```
 
 **File Naming:**
+
 - 📄 Components → `PascalCase.jsx` (Header.jsx, ChatMessage.jsx)
 - 📄 Slices → `camelCase.js` (uiSlice.js, chatSlice.js)
 - 📄 Utilities → `camelCase.js` (helpers.js, constants.js)
@@ -97,6 +98,7 @@ frontend/
 ## ⚛️ Component Rules
 
 ### ✅ DO
+
 ```jsx
 // ✅ Small, focused, reusable
 const MessageCard = ({ role, text, dark }) => (
@@ -119,9 +121,12 @@ const sortedMessages = useMemo(() => messages.sort(...), [messages]);
 ```
 
 ### ❌ DON'T
+
 ```jsx
 // ❌ Render 500+ LOC in one component
-const MonsterComponent = () => { /* 600 lines */ };
+const MonsterComponent = () => {
+  /* 600 lines */
+};
 
 // ❌ Side-effects in render
 const BadComponent = () => {
@@ -130,21 +135,23 @@ const BadComponent = () => {
 };
 
 // ❌ Prop drilling deep trees
-<ChatList messages={msgs} user={u} theme={t} lang={l} status={s} />
+<ChatList messages={msgs} user={u} theme={t} lang={l} status={s} />;
 ```
 
 ### 📏 Component Size Guidelines
-| LOC | Action |
-|-----|--------|
-| < 100 | ✅ Good |
+
+| LOC     | Action                |
+| ------- | --------------------- |
+| < 100   | ✅ Good               |
 | 100-200 | ⚠️ Consider splitting |
-| > 200 | ❌ Must refactor |
+| > 200   | ❌ Must refactor      |
 
 ---
 
 ## 🔄 State Management: Redux Toolkit
 
 ### ✅ DO: Use Redux for Global State
+
 ```jsx
 // 📝 Example: uiSlice.js
 import { createSlice } from "@reduxjs/toolkit";
@@ -153,9 +160,15 @@ const uiSlice = createSlice({
   name: "ui",
   initialState: { dark: true, input: "", sidebarOpen: true },
   reducers: {
-    toggleDark: (state) => { state.dark = !state.dark; },
-    setInput: (state, action) => { state.input = action.payload; },
-    setSidebarOpen: (state, action) => { state.sidebarOpen = action.payload; },
+    toggleDark: (state) => {
+      state.dark = !state.dark;
+    },
+    setInput: (state, action) => {
+      state.input = action.payload;
+    },
+    setSidebarOpen: (state, action) => {
+      state.sidebarOpen = action.payload;
+    },
   },
 });
 
@@ -164,6 +177,7 @@ export default uiSlice.reducer;
 ```
 
 ### ✅ DO: Connect Components with Hooks
+
 ```jsx
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDark } from "../store/slices/uiSlice";
@@ -181,6 +195,7 @@ export default function ThemeToggle() {
 ```
 
 ### ❌ DON'T: Use Redux for Ephemeral State
+
 ```jsx
 // ❌ Don't put in Redux
 const [isDropdownOpen, setIsDropdownOpen] = useState(false); // local OK
@@ -190,6 +205,7 @@ const isDarkMode = useSelector((state) => state.ui.dark); // shared
 ```
 
 ### 📊 Slice Structure Template
+
 ```js
 // slices/featureSlice.js
 const initialState = {
@@ -203,11 +219,15 @@ const featureSlice = createSlice({
   initialState,
   reducers: {
     // Synchronous actions
-    addItem: (state, action) => { state.data.push(action.payload); },
+    addItem: (state, action) => {
+      state.data.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     // Async thunk handlers
-    builder.addCase(fetchData.pending, (state) => { state.loading = true; });
+    builder.addCase(fetchData.pending, (state) => {
+      state.loading = true;
+    });
   },
 });
 ```
@@ -217,10 +237,11 @@ const featureSlice = createSlice({
 ## 🎨 Styling & Tailwind
 
 ### ✅ DO: Use Tailwind Utilities
+
 ```jsx
 <div className="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow">
   Content
-</div>
+</div>;
 
 // Complex classNames → template literal
 const buttonClasses = `
@@ -231,6 +252,7 @@ const buttonClasses = `
 ```
 
 ### ✅ DO: Keep Theme in Redux
+
 ```jsx
 // In uiSlice
 const dark = useSelector((state) => state.ui.dark);
@@ -238,6 +260,7 @@ const dark = useSelector((state) => state.ui.dark);
 ```
 
 ### ❌ DON'T: Inline Styles Unless Necessary
+
 ```jsx
 // ❌ Avoid
 <div style={{ backgroundColor: isDark ? "#1f1f1f" : "#fff" }} />
@@ -251,6 +274,7 @@ const dark = useSelector((state) => state.ui.dark);
 ## 📝 Naming & Types
 
 ### Variables & Functions
+
 ```js
 // ✅ Clear, descriptive names
 const fetchUserMessages = async () => { ... };
@@ -264,6 +288,7 @@ const h = () => { ... };
 ```
 
 ### Exports
+
 ```jsx
 // 📄 Component file → default export
 export default function Header() { ... }
@@ -274,6 +299,7 @@ export const API_BASE_URL = "https://api.example.com";
 ```
 
 ### Constants
+
 ```js
 // utils/constants.js
 export const ROLES = {
@@ -292,6 +318,7 @@ export const API_ENDPOINTS = {
 ## ⏳ Async & Side Effects
 
 ### ✅ DO: Use createAsyncThunk
+
 ```jsx
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -312,7 +339,9 @@ const chatSlice = createSlice({
   // ...
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.pending, (state) => { state.loading = true; })
+      .addCase(fetchMessages.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(fetchMessages.fulfilled, (state, action) => {
         state.messages = action.payload;
         state.loading = false;
@@ -326,22 +355,26 @@ const chatSlice = createSlice({
 ```
 
 ### ✅ DO: Centralize API Client
+
 ```js
 // utils/api.js
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_BASE = process.env.REACT_APP_API_URL || "";
 
 export const api = {
   chat: {
-    sendMessage: (msg) => fetch(`${API_BASE}/chat`, { body: JSON.stringify(msg) }),
+    sendMessage: (msg) =>
+      fetch(`${API_BASE}/chat`, { body: JSON.stringify(msg) }),
     getHistory: () => fetch(`${API_BASE}/chat/history`),
   },
   auth: {
-    login: (creds) => fetch(`${API_BASE}/auth/login`, { body: JSON.stringify(creds) }),
+    login: (creds) =>
+      fetch(`${API_BASE}/auth/login`, { body: JSON.stringify(creds) }),
   },
 };
 ```
 
 ### ❌ DON'T: Network Calls in Components
+
 ```jsx
 // ❌ Bad
 const MyComponent = () => {
@@ -363,6 +396,7 @@ const MyComponent = () => {
 ## ✅ Testing
 
 ### Unit Tests (Slices & Utils)
+
 ```js
 // __tests__/chatSlice.test.js
 import chatReducer, { addMessage } from "../slices/chatSlice";
@@ -370,13 +404,17 @@ import chatReducer, { addMessage } from "../slices/chatSlice";
 describe("chatSlice", () => {
   it("should add a message", () => {
     const state = { messages: [] };
-    const newState = chatReducer(state, addMessage({ role: "user", text: "Hi" }));
+    const newState = chatReducer(
+      state,
+      addMessage({ role: "user", text: "Hi" })
+    );
     expect(newState.messages).toHaveLength(1);
   });
 });
 ```
 
 ### Component Tests (RTL)
+
 ```jsx
 // __tests__/Header.test.jsx
 import { render, screen } from "@testing-library/react";
@@ -389,17 +427,19 @@ it("renders header with title", () => {
 ```
 
 ### Coverage Target
-| Category | Target |
-|----------|--------|
-| Utilities | 90%+ |
-| Slices | 80%+ |
-| Components | 60%+ |
+
+| Category   | Target |
+| ---------- | ------ |
+| Utilities  | 90%+   |
+| Slices     | 80%+   |
+| Components | 60%+   |
 
 ---
 
 ## 🔨 Git & Commits
 
 ### Commit Message Format
+
 ```
 <type>(<scope>): <description>
 
@@ -408,6 +448,7 @@ it("renders header with title", () => {
 ```
 
 ### Types
+
 ```
 feat:   ✨ New feature
 fix:    🐛 Bug fix
@@ -420,6 +461,7 @@ perf:   ⚡ Performance
 ```
 
 ### Examples
+
 ```bash
 git commit -m "feat(chat): add message streaming support"
 git commit -m "fix(ui): dark mode toggle not persisting"
@@ -428,6 +470,7 @@ git commit -m "docs: update PROJECT_RULES"
 ```
 
 ### PR Checklist
+
 - [ ] Branch name: `feature/short-desc` or `fix/short-desc`
 - [ ] ESLint: `npm run lint` passes
 - [ ] Tests: `npm run test` passes
@@ -441,6 +484,7 @@ git commit -m "docs: update PROJECT_RULES"
 ## ♿ Accessibility & Performance
 
 ### 🎯 Accessibility Checklist
+
 - [ ] Semantic HTML (`<button>`, `<header>`, `<main>`)
 - [ ] Keyboard navigation (Tab, Enter, Escape)
 - [ ] ARIA labels for icon buttons: `<button aria-label="Close">`
@@ -450,6 +494,7 @@ git commit -m "docs: update PROJECT_RULES"
 - [ ] Screen reader friendly
 
 ### ⚡ Performance Tips
+
 ```jsx
 // Use React.memo for expensive renders
 const MemoizedMessage = React.memo(ChatMessage);

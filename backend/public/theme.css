@@ -1,0 +1,47 @@
+/* theme.css */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.chat-screen {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.input-area {
+  display: flex;
+  padding: 0.5rem;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.input-area button {
+  margin-left: 0.5rem;
+}
+
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .home-container {
+    flex-direction: row;
+  }
+
+  .sidebar {
+    display: block;
+    width: 250px;
+    background: #f4f4f4;
+    padding: 1rem;
+  }
+
+  .chat-screen {
+    flex: 1;
+  }
+}

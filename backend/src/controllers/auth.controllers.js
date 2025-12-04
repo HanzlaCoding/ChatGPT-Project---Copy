@@ -23,7 +23,7 @@ const registerController = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({
         message:
-          "ُPlease login your account http://localhost:3000/api/auth/login. This email already exist!",
+          "ُPlease login your account /api/auth/login. This email already exist!",
       });
     }
 
@@ -80,8 +80,7 @@ const loginController = async (req, res) => {
 
     if (!existingUser) {
       return res.status(401).json({
-        message:
-          "Please create your accoount => http://localhost:3000/api/auth/register.",
+        message: "Please create your accoount => /api/auth/register.",
       });
     }
 
