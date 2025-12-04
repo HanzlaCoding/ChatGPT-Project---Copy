@@ -21,6 +21,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.static(__dirname, "../public"));
 
 app.get("*name", (req, res) => {
