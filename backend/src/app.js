@@ -1,5 +1,5 @@
 import { fileURLToPath } from "url";
-import { dirname } from "path";
+import path, { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,9 +22,9 @@ app.use(
   })
 );
 
-app.use(express.static(__dirname, "../public"));
+app.use(express.static(path.join(__dirname, "../public")));
 
-app.get("*name", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
